@@ -1,13 +1,20 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"transmedia/career/controller"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-	r.Run() // listen and serve on 0.0.0.0:8080
+	r.LoadHTMLGlob("templates/*")
+
+	// Menggunakan controller login
+	loginController := &controller.LoginController{}
+
+	r.GET("/login", loginController.ShowLoginForm)
+	r.POST("/login", loginController.HandleLogin)
+
+	r.Run()
 }
