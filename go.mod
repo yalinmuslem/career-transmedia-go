@@ -1,4 +1,4 @@
-module transmedia/career
+module transmediacareer
 
 go 1.21.0
 

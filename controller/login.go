@@ -1,15 +1,31 @@
-package controller
+package login
 
-import "github.com/gin-gonic/gin"
+import (
+	"time"
+	"transmediacareer/data"
 
-type LoginController struct{}
+	"github.com/gin-gonic/gin"
+)
 
-func (ctrl *LoginController) ShowLoginForm(c *gin.Context) {
+func ShowLoginForm(c *gin.Context, transmedia data.JSONData) {
+
 	// Menampilkan halaman form login
-	c.HTML(200, "login-form.html", gin.H{})
+
+	tahunSaatIni := time.Now().Year()
+	c.HTML(200, "login-form.html", gin.H{
+		"DeskripsiPerusahaan": transmedia.TRANSMEDIA.DeskripsiPerusahaan,
+		"AlamatPerusahaan":    transmedia.TRANSMEDIA.AlamatPerusahaan,
+		"Tahun":               tahunSaatIni,
+		"Phone":               transmedia.TRANSMEDIA.KONTAK.PHONE,
+		"Fax":                 transmedia.TRANSMEDIA.KONTAK.FAX,
+		"Twitter":             transmedia.TRANSMEDIA.SosialMedia.Twitter,
+		"Facebook":            transmedia.TRANSMEDIA.SosialMedia.Facebook,
+		"Youtube":             transmedia.TRANSMEDIA.SosialMedia.Youtube,
+		"Instagram":           transmedia.TRANSMEDIA.SosialMedia.Instagram,
+	})
 }
 
-func (ctrl *LoginController) HandleLogin(c *gin.Context) {
+func HandleLogin(c *gin.Context) {
 	// Logika penanganan login
 	// ...
 	// Contoh: Verifikasi kredensial, buat sesi, dll.
