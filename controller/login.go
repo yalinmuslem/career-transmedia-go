@@ -1,9 +1,10 @@
 package login
 
 import (
+	"bytes"
 	"fmt"
 	"net/http"
-	"os"
+	"path"
 	"time"
 	"transmediacareer/data"
 
@@ -11,22 +12,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ShowCaptcha(c *gin.Context, cap string) {
+func ShowCaptcha(c *gin.Context, captchaid string) {
 	// fmt.Println(cap)
-	http.Handle("/assets/captcha", captcha.Server(captcha.StdWidth, captcha.StdHeight))
+	_, file := path.Split(captchaid)
+	// _, file := path.Split(c.Request.URL.Path)
+	ext := path.Ext(file)
+	id := file[:len(file)-len(ext)]
+	// fmt.Println("file : " + file)
+	// fmt.Println("ext : " + ext)
+	// fmt.Println("id : " + id)
+	// fmt.Println("dir" + dir)
+	if c.Request.FormValue("reload") != "" {
+		captcha.Reload(id)
+	}
+	var content bytes.Buffer
+	c.Writer.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+	c.Writer.Header().Set("Pragma", "no-cache")
+	c.Writer.Header().Set("Expires", "0")
+	c.Writer.Header().Set("Content-Type", "image/png")
+	captcha.WriteImage(&content, id, captcha.StdWidth, captcha.StdHeight)
+	http.ServeContent(c.Writer, c.Request, id+ext, time.Time{}, bytes.NewReader(content.Bytes()))
 }
 
 func ShowLoginForm(c *gin.Context, transmedia data.JSONData) {
-
-	captchaDir := "assets/captcha"
-	if err := os.MkdirAll(captchaDir, os.ModePerm); err != nil {
-		panic(err)
-	}
-
-	captcha.SetCustomStore(&CustomStore{
-		CaptchaDir: captchaDir,
-	})
-
 	// Menampilkan halaman form login
 	captchaID := captcha.New()
 	fmt.Printf("captchaID: %v\n", captchaID)
@@ -45,37 +53,4 @@ func HandleLogin(c *gin.Context) {
 
 	// Mengarahkan pengguna setelah login berhasil
 	c.Redirect(302, "/dashboard")
-}
-
-// CustomStore adalah penyimpanan CAPTCHA kustom
-type CustomStore struct {
-	CaptchaDir string
-}
-
-// Set mengatur CAPTCHA dengan ID ke dalam penyimpanan
-func (s *CustomStore) Set(id string, digits []byte) {
-	// Simpan gambar CAPTCHA ke dalam direktori CaptchaDir
-	filePath := s.CaptchaDir + "/" + id + ".png"
-	os.WriteFile(filePath, digits, 0644)
-	// captcha.WriteImage()
-}
-
-// Get mengambil gambar CAPTCHA dengan ID dari penyimpanan
-func (s *CustomStore) Get(id string, clear bool) (digits []byte) {
-	filePath := s.CaptchaDir + "/" + id + ".png"
-	digits, err := os.ReadFile(filePath)
-	if err != nil {
-		panic(err)
-	}
-	if clear {
-		_ = os.Remove(filePath)
-	}
-	return digits
-}
-
-// Clear menghapus CAPTCHA dengan ID dari penyimpanan
-func (s *CustomStore) Clear(id string) {
-	// Hapus gambar CAPTCHA dari direktori CaptchaDir
-	filePath := s.CaptchaDir + "/" + id + ".png"
-	_ = os.Remove(filePath)
 }

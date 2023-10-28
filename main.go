@@ -44,9 +44,9 @@ func main() {
 	r.POST("/login", func(ctx *gin.Context) {
 		// login.HandleLogin(ctx)
 	})
-	r.GET("/captcha/:captcha", func(ctx *gin.Context) {
-		captchaID := ctx.Param("captcha")
-		login.ShowCaptcha(ctx, captchaID)
+	r.GET("/captcha/:captchaid", func(ctx *gin.Context) {
+		captchaid := ctx.Param("captchaid")
+		login.ShowCaptcha(ctx, captchaid)
 	})
 	r.Run()
 }
