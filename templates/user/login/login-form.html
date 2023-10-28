@@ -166,18 +166,7 @@
         </div>
     </div>
 
-    <script>
-        function reloadCaptcha() {
-            $.ajax({
-                url: './reload-captcha',
-                type: 'POST',
-                data: {},
-                success: resp => {
-                    $('#captcha').html(`<image src="images/captcha/${resp.filename}" class="rounded-4 w-100" />`);
-                }
-            });
-        }
-    </script>
+    {{ template "js". }}
 </body>
 
 </html>

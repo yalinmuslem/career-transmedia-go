@@ -34,6 +34,14 @@ func ShowCaptcha(c *gin.Context, captchaid string) {
 	http.ServeContent(c.Writer, c.Request, id+ext, time.Time{}, bytes.NewReader(content.Bytes()))
 }
 
+func ReloadCaptcha(c *gin.Context) {
+	captchaId := captcha.New()
+	c.JSON(200, gin.H{
+		"status": true,
+		"code":   captchaId,
+	})
+}
+
 func ShowLoginForm(c *gin.Context, transmedia data.JSONData) {
 	// Menampilkan halaman form login
 	captchaID := captcha.New()

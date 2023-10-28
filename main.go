@@ -41,13 +41,20 @@ func main() {
 
 		login.ShowLoginForm(ctx, transmedia)
 	})
+
 	r.POST("/login", func(ctx *gin.Context) {
 		// login.HandleLogin(ctx)
 	})
+
 	r.GET("/captcha/:captchaid", func(ctx *gin.Context) {
 		captchaid := ctx.Param("captchaid")
 		login.ShowCaptcha(ctx, captchaid)
 	})
+
+	r.POST("/reload-captcha", func(ctx *gin.Context) {
+		login.ReloadCaptcha(ctx)
+	})
+
 	r.Run()
 }
 
@@ -57,6 +64,7 @@ func loadTemplates(templatesDir string) multitemplate.Render {
 	r.AddFromFiles("login-form",
 		templatesDir+"/user/login/login-form.html",
 		templatesDir+"/user/login/content.html",
+		templatesDir+"/user/login/js-login.html",
 		templatesDir+"/user/menu.html")
 	return r
 }

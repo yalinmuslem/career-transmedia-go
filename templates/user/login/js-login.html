@@ -1,0 +1,15 @@
+{{ define "js" }}
+<script>
+    function reloadCaptcha() {
+        $.ajax({
+            url: '/reload-captcha',
+            type: 'POST',
+            success: resp => {
+                if (resp.status) {
+                    $('#captcha').html(`<img src="/captcha/${resp.code}.png" class="rounded-4 w-100" />`)
+                }
+            }
+        })
+    }
+</script>
+{{ end }}
