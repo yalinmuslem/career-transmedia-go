@@ -1,0 +1,35 @@
+<script>
+    function reloadCaptcha() {
+        $.ajax({
+            url: '/recaptcha',
+            type: 'POST',
+            data: {
+                "{{.data.csrf.name}}": "{{.data.csrf.token}}"
+            },
+            success: resp => {
+                if (resp.status) {
+                    $('#captcha').html(`<img src="/captcha/${resp.captchaID}.png" class="rounded-4 w-100" />`)
+                }
+            }
+        })
+    }
+
+    new tempusDominus.TempusDominus(document.getElementById('dob'), {
+        display: {
+            components: {
+                clock: false,
+            }
+        },
+        restrictions: {
+            minDate: new Date('1970-01-01'),
+            maxDate: new Date()
+        },
+        localization: {
+            dateFormats: {
+                L: 'yyyy-MM-dd'
+            },
+            format: 'L'
+        }
+    });
+
+</script>

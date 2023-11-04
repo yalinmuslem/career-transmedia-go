@@ -1,0 +1,81 @@
+<div class="container mb-15">
+    <div class="d-flex justify-content-center">
+        <div class="d-flex flex-column-fluid flex-lg-row-auto justify-content-center justify-content-lg-end">
+            <div class="bg-body d-flex flex-center flex-column p-10 rounded-4">
+                <div class="d-flex flex-center flex-column align-items-stretch h-lg-100 w-md-400px">
+                    <div class="d-flex flex-center flex-column flex-column-fluid mb-20">
+                        <form action="/forgot-password" method="post" class="form w-100">
+                            <input type="hidden" name="captchaId" value="{{ .captchaID }}">
+                            <input type="hidden" name="{{ .data.csrf.name }}" value="{{ .data.csrf.token }}">
+                            <div class="text-center mb-11">
+                                <h1 class="text-dark fw-bolder mb-3">Forgot Password</h1>
+                                <div class="text-gray-500 fw-semibold fs-6"><span
+                                        class="fw-bolder text-primary">TRANSMEDIA Career</span> Account
+                                </div>
+                            </div>
+                            <div class="mb-8">
+                                <input type="text" required placeholder="Email" name="email" autocomplete="off"
+                                    value="{{ .data.emailError.Value }}"
+                                    class="form-control bg-transparent {{ if .data.emailError.Info }} is-invalid {{ end }}" />
+                                {{ if .data.emailError.Info }}
+                                <div class="invalid-feedback">
+                                    {{ .data.emailError.Info }}
+                                </div>
+                                {{ end }}
+                            </div>
+                            <div class="mb-8">
+                                <div id="dob"
+                                    class="input-group {{ if .data.birthdateError.Info }} is-invalid {{ end }}">
+                                    <input type="text" required placeholder="Date of Birth" name="birthdate"
+                                        autocomplete="off" value="{{ .data.birthdateError.Value }}"
+                                        class="form-control bg-transparent {{ if .data.birthdateError.Info }} is-invalid {{ end }}">
+                                    <span class="input-group-text">
+                                        <i class="fa-solid fa-calendar"></i>
+                                    </span>
+                                </div>
+                                {{ if .data.birthdateError.Info }}
+                                <div class="invalid-feedback">
+                                    {{ .data.birthdateError.Info }}
+                                </div>
+                                {{ end }}
+                            </div>
+                            <div class="mb-8">
+                                <div id="captcha">
+                                    <img src="/captcha/{{.captchaID}}.png" alt="" class="rounded-4 w-100">
+                                </div>
+                                <div class="float-end">
+                                    <a href="javascript:;" onclick="reloadCaptcha()" class="fw-semibold">Reload
+                                        Captcha</a>
+                                </div>
+                            </div>
+                            <div class="mb-8">
+                                <input type="text" required placeholder="Captcha" name="captcha" autocomplete="off"
+                                    class="form-control bg-transparent {{ if .data.captchaError.Info }} is-invalid {{ end }}" />
+                                {{ if .data.captchaError.Info }}
+                                <div class="invalid-feedback">
+                                    {{ .data.captchaError.Info }}
+                                </div>
+                                {{ end }}
+                            </div>
+                            <div class="d-grid mb-10">
+                                <button type="submit" class="btn btn-primary">
+                                    <span class="indicator-label">Reset Password</span>
+                                </button>
+                            </div>
+                            <div class="text-gray-500 text-center fw-semibold fs-6">Don't have an account?
+                                <a href="https://karir.transtv.co.id/new-themes.php" class="link-primary">Register</a>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="">
+                        <div class="d-flex fs-base fw-semibold gap-5 justify-content-center text-primary">
+                            <a href="/terms">Terms</a>
+                            <a href="/privacy_policy">Privacy Policy</a>
+                            <a href="#Footer">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

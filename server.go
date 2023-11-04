@@ -92,6 +92,28 @@ func main() {
 		return nil
 	})
 
+	e.GET("forgot-password", func(c echo.Context) error {
+		data := map[string]interface{}{
+			"csrf": map[string]interface{}{
+				"token": c.Get(CSRFTokenKey).(string),
+				"name":  CSRFTokenName,
+			},
+		}
+		login.ForgotPassword(c, jsonData, data, nil, nil)
+		return nil
+	})
+
+	e.POST("/forgot-password", func(c echo.Context) error {
+		data := map[string]interface{}{
+			"csrf": map[string]interface{}{
+				"token": c.Get(CSRFTokenKey).(string),
+				"name":  CSRFTokenName,
+			},
+		}
+		login.HandleForgotPassword(c, jsonData, data)
+		return nil
+	})
+
 	u := e.Group("/user")
 	u.Use(session.MiddlewareWithConfig(session.Config{
 		Store: sessions.NewCookieStore([]byte("ee6779d4-decc-40a8-849b-ae01e02b15c5")),

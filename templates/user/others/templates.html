@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRANSMEDIA Career</title>
+    <link rel="shortcut icon" href="assets/media/logos/ico-transtv.png" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" />
+    <link href="assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <style>
+        [data-bs-theme=light] body {
+            --bs-secondary: #FF6B00;
+        }
+
+        [data-bs-theme="dark"] body {
+            --bs-secondary: #FF6B00;
+        }
+
+        #kt_app_root {
+            background-image: url('assets/media/auth/bg-polos.jpg');
+        }
+
+        .btn.btn-secondary {
+            background-color: var(--bs-secondary);
+            color: var(--bs-text-white);
+        }
+
+        .btn.btn-secondary:hover:not(.btn-active) {
+            background-color: var(--bs-secondary) !important;
+            color: var(--bs-text-white);
+        }
+
+        .landing-header .menu .menu-link.active {
+            color: var(--bs-primary);
+        }
+
+        .rounded-4 {
+            border-radius: 24px !important;
+        }
+    </style>
+</head>
+
+<body id="home" data-bs-spy="scroll" data-bs-target="#kt_landing_menu">
+
+    <div class="d-flex flex-column flex-root bgi-size-cover bgi-attachment-fixed bgi-position-center" id="kt_app_root">
+        <div class="mb-0">
+            <div class="">
+                {{ template "menu.html" }}
+                <div id="news-container"
+                    class="align-items-center bg-primary-active d-flex h-30px justify-content-center mb-10 text-center text-white">
+                    <div id="news-ticker"></div>
+                </div>
+                {{ template "content.html" . }}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-black" id="Footer">
+        <div class="container pb-5 pt-20">
+            <div class="row">
+                <div class="col-md-12 me-20">
+                    <img alt="Logo" src="assets/media/logos/transmedia-white.png"
+                        class="logo-default h-25px h-lg-30px" />
+                </div>
+                <div class="col-md-4 d-flex flex-column text-white">
+                    <div class="fw-bolder py-7">Contact</div>
+                    <div>{{ .transmedia.TRANSMEDIA.DeskripsiPerusahaan }}</div>
+                    <div>{{ .transmedia.TRANSMEDIA.AlamatPerusahaan }}</div>
+                    <div>Phone: {{ .transmedia.TRANSMEDIA.KONTAK.PHONE }}</div>
+                    <div>Fax: {{ .transmedia.TRANSMEDIA.KONTAK.FAX }}</div>
+                </div>
+                <div class="col-md-4 d-flex flex-column text-white">
+                    <div class="fw-bolder py-7">Stay Update</div>
+                    <div><a class="text-secondary" href="{{ .transmedia.TRANSMEDIA.SosialMedia.Twitter }}" target="_blank"
+                            rel="noopener noreferrer">Twitter</a></div>
+                    <div><a class="text-secondary" href="{{ .transmedia.TRANSMEDIA.SosialMedia.Facebook }}" target="_blank"
+                            rel="noopener noreferrer">Facebook</a></div>
+                    <div><a class="text-secondary" href="{{ .transmedia.TRANSMEDIA.SosialMedia.Youtube }}" target="_blank"
+                            rel="noopener noreferrer">Youtube</a></div>
+                    <div><a class="text-secondary" href="{{ .transmedia.TRANSMEDIA.SosialMedia.Instagram }}" target="_blank"
+                            rel="noopener noreferrer">Instagram</a></div>
+                </div>
+                <div class="col-md-4 d-flex flex-column text-white">
+                    <div class="fw-bolder py-7">Get the App</div>
+                    <ul class="list-style-none p-0">
+                        <li class="mb-5"><img src="assets/media/features-logos/apps-store.png" alt="" srcset=""></li>
+                        <li class="mb-5"><img src="assets/media/features-logos/play-store.png" alt="" srcset=""></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="text-white">&copy;
+                        {{ .Tahun }} HRIS TRANS TV. All rights reserved
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+        <i class="fa fa-arrow-up text-white"></i>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-4">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Understood</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var defaultThemeMode = "light";
+        var themeMode;
+        if (document.documentElement) {
+            if (document.documentElement.hasAttribute("data-bs-theme-mode")) {
+                themeMode = document.documentElement.getAttribute("data-bs-theme-mode");
+            } else {
+                if (localStorage.getItem("data-bs-theme") !== null) {
+                    themeMode = localStorage.getItem("data-bs-theme");
+                } else {
+                    themeMode = defaultThemeMode;
+                }
+            }
+            if (themeMode === "system") {
+                themeMode = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+            }
+            document.documentElement.setAttribute("data-bs-theme", themeMode);
+        }
+    </script>
+    <script src="assets/plugins/global/plugins.bundle.js"></script>
+    <script src="assets/js/scripts.bundle.js"></script>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content rounded-4">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="loginModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ template "js.html" . }}
+</body>
+
+</html>

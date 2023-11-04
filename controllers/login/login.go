@@ -14,9 +14,9 @@ func ShowLoginForm(e echo.Context, transmedia data.JSONData, data map[string]int
 	captchaID := captcha.New()
 	tahunSaatIni := time.Now().Year()
 	var tmpl = template.Must(template.ParseFiles(
-		"templates/user/login/login-form.html",
+		"templates/user/others/templates.html",
 		"templates/user/login/content.html",
-		"templates/user/login/js-login.html",
+		"templates/user/login/js.html",
 		"templates/user/others/menu.html",
 	))
 
@@ -39,7 +39,7 @@ func ShowLoginForm(e echo.Context, transmedia data.JSONData, data map[string]int
 			data["captchaError"] = errorCaptcha
 		}
 
-		return tmpl.ExecuteTemplate(e.Response().Writer, "login-form.html", map[string]interface{}{
+		return tmpl.ExecuteTemplate(e.Response().Writer, "templates.html", map[string]interface{}{
 			"title":      "Login",
 			"Tahun":      tahunSaatIni,
 			"transmedia": transmedia,
@@ -49,7 +49,7 @@ func ShowLoginForm(e echo.Context, transmedia data.JSONData, data map[string]int
 
 	}
 
-	return tmpl.ExecuteTemplate(e.Response().Writer, "login-form.html", map[string]interface{}{
+	return tmpl.ExecuteTemplate(e.Response().Writer, "templates.html", map[string]interface{}{
 		"title":      "Login",
 		"Tahun":      tahunSaatIni,
 		"transmedia": transmedia,
