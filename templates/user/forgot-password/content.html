@@ -13,6 +13,11 @@
                                         class="fw-bolder text-primary">TRANSMEDIA Career</span> Account
                                 </div>
                             </div>
+                            {{ if .data.resultError.Info }}
+                            <div class="alert alert-danger">
+                                {{ .data.resultError.Info }}
+                            </div>
+                            {{ end }}
                             <div class="mb-8">
                                 <input type="text" required placeholder="Email" name="email" autocomplete="off"
                                     value="{{ .data.emailError.Value }}"
@@ -27,7 +32,7 @@
                                 <div id="dob"
                                     class="input-group {{ if .data.birthdateError.Info }} is-invalid {{ end }}">
                                     <input type="text" required placeholder="Date of Birth" name="birthdate"
-                                        autocomplete="off" value="{{ .data.birthdateError.Value }}"
+                                        autocomplete="off"
                                         class="form-control bg-transparent {{ if .data.birthdateError.Info }} is-invalid {{ end }}">
                                     <span class="input-group-text">
                                         <i class="fa-solid fa-calendar"></i>

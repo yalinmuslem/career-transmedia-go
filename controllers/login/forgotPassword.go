@@ -12,6 +12,16 @@ import (
 
 func ForgotPassword(c echo.Context, transmedia data.JSONData, data map[string]interface{}, errorValidation any, othersError any) error {
 
+	var tmpl = template.Must(template.ParseFiles(
+		"templates/user/others/templates.html",
+		"templates/user/forgot-password/content.html",
+		"templates/user/forgot-password/js.html",
+		"templates/user/others/menu.html",
+	))
+
+	tahunSaatIni := time.Now().Year()
+	captchaID := captcha.New()
+
 	if othersError != nil || errorValidation != nil {
 		if errorValidation != nil {
 			for _, err := range errorValidation.(validator.ValidationErrors) {
@@ -31,22 +41,20 @@ func ForgotPassword(c echo.Context, transmedia data.JSONData, data map[string]in
 					data["birthdateError"] = othersError.(map[string]interface{})["birthdate"]
 				case "captcha":
 					data["captchaError"] = othersError.(map[string]interface{})["captcha"]
+				case "result":
+					data["resultError"] = othersError.(map[string]interface{})["result"]
 				}
 			}
 		}
 
-		ForgotPassword(c, transmedia, data, nil, nil)
+		return tmpl.ExecuteTemplate(c.Response().Writer, "templates.html", map[string]interface{}{
+			"title":      "Login",
+			"Tahun":      tahunSaatIni,
+			"transmedia": transmedia,
+			"captchaID":  captchaID,
+			"data":       data,
+		})
 	}
-
-	var tmpl = template.Must(template.ParseFiles(
-		"templates/user/others/templates.html",
-		"templates/user/forgot-password/content.html",
-		"templates/user/forgot-password/js.html",
-		"templates/user/others/menu.html",
-	))
-
-	tahunSaatIni := time.Now().Year()
-	captchaID := captcha.New()
 
 	return tmpl.ExecuteTemplate(c.Response().Writer, "templates.html", map[string]interface{}{
 		"title":      "Login",

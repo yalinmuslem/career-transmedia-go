@@ -5,6 +5,7 @@ import (
 	login "my-app/controllers/login"
 	userboard "my-app/controllers/userboard"
 	"my-app/data"
+	forgotpassword "my-app/data/forgot-password"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -33,6 +34,7 @@ func main() {
 		panic(err)
 	}
 
+	// CSRF
 	const CSRFTokenName = "csrf_token_career"
 	const CSRFTokenMaxAge = 86400
 	const CSRFTokenPath = "/"
@@ -58,11 +60,13 @@ func main() {
 	e.Static("/assets", "assets")
 
 	e.GET("/", func(c echo.Context) error {
+
 		data := map[string]interface{}{
 			"csrf": map[string]interface{}{
 				"token": c.Get(CSRFTokenKey).(string),
 				"name":  CSRFTokenName,
 			},
+			// "corps": map[string]interface{}{"corporate": corporate.SelectData(c)},
 		}
 		// fmt.Println(data)
 		login.ShowLoginForm(c, jsonData, data, nil, nil)
@@ -101,6 +105,16 @@ func main() {
 		}
 		login.ForgotPassword(c, jsonData, data, nil, nil)
 		return nil
+	})
+
+	e.GET("test-forgot-password", func(c echo.Context) error {
+
+		c.Request().Method = http.MethodPost
+		c.Request().Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+		c.Request().PostForm = map[string][]string{"email": {"yalin.muslem@gmail.com"}, "perusahaan": {"TRANSTV"}}
+
+		res := map[string]interface{}{"result": forgotpassword.SelectData(c)}
+		return c.JSON(200, res)
 	})
 
 	e.POST("/forgot-password", func(c echo.Context) error {

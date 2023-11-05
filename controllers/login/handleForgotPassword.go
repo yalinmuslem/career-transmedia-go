@@ -1,7 +1,9 @@
 package login
 
 import (
+	"fmt"
 	"my-app/data"
+	forgotpassword "my-app/data/forgot-password"
 	"time"
 
 	"github.com/dchest/captcha"
@@ -24,13 +26,13 @@ func HandleForgotPassword(c echo.Context, transmedia data.JSONData, data map[str
 	captchaID := captcha.VerifyString(c.Request().FormValue("captchaId"), c.Request().FormValue("captcha"))
 
 	if !captchaID {
-		ForgotPassword(c, transmedia, data, nil, map[string]interface{}{"captcha": map[string]interface{}{"Info": "Captcha tidak sesuai", "Value": c.Request().FormValue("captcha")}})
+		return ForgotPassword(c, transmedia, data, nil, map[string]interface{}{"captcha": map[string]interface{}{"Info": "Captcha tidak sesuai", "Value": c.Request().FormValue("captcha")}})
 	}
 
 	birthdate := c.Request().FormValue("birthdate")
 	errBirthdate := validateDate(birthdate)
 	if errBirthdate != nil {
-		ForgotPassword(c, transmedia, data, nil, map[string]interface{}{"birthdate": map[string]interface{}{"Info": "Format tanggal salah", "Value": c.Request().FormValue("birthdate")}})
+		return ForgotPassword(c, transmedia, data, nil, map[string]interface{}{"birthdate": map[string]interface{}{"Info": "Format tanggal salah", "Value": c.Request().FormValue("birthdate")}})
 	}
 
 	validate := validator.New()
@@ -44,7 +46,18 @@ func HandleForgotPassword(c echo.Context, transmedia data.JSONData, data map[str
 	err := validate.Struct(forgotPasswordForm)
 	if err != nil {
 		// fmt.Println(err)
-		ForgotPassword(c, transmedia, data, err, nil)
+		return ForgotPassword(c, transmedia, data, err, nil)
+	}
+
+	res := map[string]interface{}{"result": forgotpassword.SelectData(c)}
+
+	fmt.Println(res)
+
+	if condition := res["result"] != nil; condition {
+		fmt.Println("Data ditemukan")
+	} else {
+		fmt.Println("Data tidak ditemukan")
+		return ForgotPassword(c, transmedia, data, nil, map[string]interface{}{"result": map[string]interface{}{"Info": "Email tidak ditemukan", "Value": c.Request().FormValue("email")}})
 	}
 
 	return nil
