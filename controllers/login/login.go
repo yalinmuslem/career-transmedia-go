@@ -38,22 +38,14 @@ func ShowLoginForm(e echo.Context, transmedia data.JSONData, data map[string]int
 		if errorCaptcha != nil {
 			data["captchaError"] = errorCaptcha
 		}
-
-		return tmpl.ExecuteTemplate(e.Response().Writer, "templates.html", map[string]interface{}{
-			"title":      "Login",
-			"Tahun":      tahunSaatIni,
-			"transmedia": transmedia,
-			"captchaID":  captchaID,
-			"data":       data,
-		})
-
 	}
 
-	return tmpl.ExecuteTemplate(e.Response().Writer, "templates.html", map[string]interface{}{
+	tmpl.ExecuteTemplate(e.Response().Writer, "templates.html", map[string]interface{}{
 		"title":      "Login",
 		"Tahun":      tahunSaatIni,
 		"transmedia": transmedia,
 		"captchaID":  captchaID,
 		"data":       data,
 	})
+	return nil
 }

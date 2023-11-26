@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	login "my-app/controllers/login"
+	"my-app/controllers/registrasi"
 	userboard "my-app/controllers/userboard"
 	"my-app/data"
 	forgotpassword "my-app/data/forgot-password"
@@ -60,6 +61,28 @@ func main() {
 	e.Static("/assets", "assets")
 
 	e.GET("/", func(c echo.Context) error {
+		data := map[string]interface{}{
+			"csrf": map[string]interface{}{
+				"token": c.Get(CSRFTokenKey).(string),
+				"name":  CSRFTokenName,
+			},
+		}
+		registrasi.ShowRegistrasiPage(c, jsonData, data, nil)
+		return nil
+	})
+
+	e.POST("do-registrasi", func(c echo.Context) error {
+		data := map[string]interface{}{
+			"csrf": map[string]interface{}{
+				"token": c.Get(CSRFTokenKey).(string),
+				"name":  CSRFTokenName,
+			},
+		}
+		registrasi.HandleRegistrasi(c, jsonData, data)
+		return nil
+	})
+
+	e.GET("/login", func(c echo.Context) error {
 
 		data := map[string]interface{}{
 			"csrf": map[string]interface{}{
@@ -140,7 +163,7 @@ func main() {
 		return nil
 	})
 
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":1322"))
 }
 
 func checkSession(c echo.Context) {

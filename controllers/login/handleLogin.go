@@ -34,6 +34,7 @@ func HandleLogin(e echo.Context, transmedia data.JSONData, data map[string]inter
 
 	if !captchaError {
 		ShowLoginForm(e, transmedia, data, nil, map[string]interface{}{"Info": "Captcha tidak sesuai", "Value": e.Request().FormValue("captcha")})
+		return
 	}
 
 	validate := validator.New()
@@ -48,6 +49,7 @@ func HandleLogin(e echo.Context, transmedia data.JSONData, data map[string]inter
 	if err != nil {
 		// fmt.Println(err)
 		ShowLoginForm(e, transmedia, data, err, nil)
+		return
 	}
 
 	randomToken := generateRandomToken()
